@@ -1,0 +1,3 @@
+2021/02/01 22:25:36 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612189536341606900}
+2021/02/01 22:54:53 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612191293210381200}
+2021/02/01 23:38:09 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612193889661728200}
