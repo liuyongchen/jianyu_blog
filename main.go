@@ -29,6 +29,10 @@ func init() {
 	}
 }
 
+// @title 博客系统
+// @version 1.0
+// @description GO语言编程之旅：一起用go做项目
+// @termsOfService https：//github.com/go-programming-tour-book
 func main() {
 	gin.SetMode(global.ServerSetting.RunMode)
 	global.Logger.Infof("%s: go-programming-tour-book/%s", "deeycjy", "blog-service")
