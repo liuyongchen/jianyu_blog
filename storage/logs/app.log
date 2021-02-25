@@ -1,0 +1,10 @@
+2021/02/01 22:25:36 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612189536341606900}
+2021/02/01 22:54:53 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612191293210381200}
+2021/02/01 23:38:09 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612193889661728200}
+2021/02/03 00:55:06 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612284906858573900}
+2021/02/03 13:29:42 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612330182807266000}
+2021/02/03 13:52:41 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612331561599809000}
+2021/02/03 15:37:37 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612337857662166500}
+2021/02/03 15:41:07 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612338067413456400}
+2021/02/06 06:32:32 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"info","message":"deeycjy: go-programming-tour-book/blog-service","time":1612564352522980800}
+2021/02/06 06:33:20 {"callers":["C:/Users/matt_liu/go/blog-service/main.go: 26 main.init.0"],"level":"error","message":"app.BindAndValid errs: State必须是[0 1]中的一个","time":1612564400436777900}
