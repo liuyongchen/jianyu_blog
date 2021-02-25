@@ -25,4 +25,4 @@ type UpdateTagRequest struct {
 
 type DeleteTagRequest struct {
 	ID uint32 `form:"id" binding:"required,gte=1"`
-}
+}吞吐p

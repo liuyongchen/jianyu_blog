@@ -57,7 +57,8 @@ func (a Article) Create(c *gin.Context) {
 
 // @Summary "更新文章"
 // @Param id path int true "文章ID"
-// @Param name body string false "文章标题" maxlength(100)
+// @Param name body string false "文章标题"
+// /maxlength(100)
 // @Param state body int false "状态" Enums(0, 1) default(1)
 // @Param content body string false "文章内容"
 // @Param modified_by body string true "修改者" maxlength(100)
