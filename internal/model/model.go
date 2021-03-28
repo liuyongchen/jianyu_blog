@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	"time"
 
 	"blog-service/global"
 	"blog-service/pkg/setting"
@@ -14,12 +15,12 @@ import (
 //     NOT EXISTS blog_service DEFAULT CHARACTER
 //     SET utf8mb4 	DEFAULT COLLATE utf8mb4_general_ci;
 //
-// `created_on` INT(10) unsigned DEFAULT '0'  COMMENT '创建时间'，
-// `created_by` varchar(100) DEFAULT '' COMMENT '创建人',
-// `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
-// `modified_by` varchar(100) DEFAULT '' COMMENT '修改人',
-// `deleted_on` int(10) unsigned DEFAULT '0' COMMENT '删除时间',
-// `is_del` tinyint(3) unsigned DEFAULT '0' COMMENT '是否删除 0 为未删除、1为已删除',
+//`created_on` INT(10) unsigned DEFAULT '0'  COMMENT '创建时间'，
+//`created_by` varchar(100) DEFAULT '' COMMENT '创建人',
+//`modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
+//`modified_by` varchar(100) DEFAULT '' COMMENT '修改人',
+//`deleted_on` int(10) unsigned DEFAULT '0' COMMENT '删除时间',
+//`is_del` tinyint(3) unsigned DEFAULT '0' COMMENT '是否删除 0 为未删除、1为已删除',
 
 // 2、创建标签表
 // CREATE TABLE `blog_tag` (
@@ -94,7 +95,66 @@ func NewDBEngine(databaseSetting *setting.DatabaseSettingS) (*gorm.DB, error) {
 	}
 
 	db.SingularTable(true)
+	db.Callback().Create().Replace("gorm:update_time_stamp",
+		updateTimeStampForCreateCallback)
+	db.Callback().Update().Replace("gorm:update_time_stamp",
+		updateTimeStampForUpdateCallback)
+	db.Callback().Delete().Replace("gorm:delete", deleteCallback)
 	db.DB().SetMaxIdleConns(databaseSetting.MaxIdleConns)
 	db.DB().SetMaxOpenConns(databaseSetting.MaxOpenConns)
+
 	return db, nil
+}
+
+func updateTimeStampForCreateCallback(scope *gorm.Scope) {
+	if !scope.HasError() {
+		nowTime := time.Now().Unix()
+		if createTimeField, ok := scope.FieldByName("CreatedOn"); ok {
+			if createTimeField.IsBlank {
+				_ = createTimeField.Set(nowTime)
+			}
+		}
+		if modifyTimeField, ok := scope.FieldByName("ModifiedOn"); ok {
+			if modifyTimeField.IsBlank {
+				_ = modifyTimeField.Set(nowTime)
+			}
+		}
+	}
+}
+
+func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
+	if _, ok := scope.Get("gorm:update_column"); !ok {
+		_ = scope.SetColumn("ModifiedOn", time.Now().Unix())
+	}
+}
+
+func deleteCallback(scope *gorm.Scope) {
+	if !scope.HasError() {
+		var extraOption string
+		if str, ok := scope.Get("gorm:delete_option"); ok {
+			extraOption = fmt.Sprint(str)
+		}
+		deleteOnField, hasDeletedOnField := scope.FieldByName("DeletedOn")
+		isDelField, hasIsDelField := scope.FieldByName("IdDel")
+		if !scope.Search.Unscoped && hasDeletedOnField && hasIsDelField {
+			now := time.Now().Unix()
+			scope.Raw(fmt.Sprintf(
+				"UPDATE %v SET %v=%v,%v=%v%v%v",
+				scope.QuotedTableName(),
+				scope.Quote(deleteOnField.DBName),
+				scope.AddToVars(now),
+				scope.Quote(isDelField.DBName),
+				scope.AddToVars(1),
+				addExtraSpaceIfExist(scope.CombinedConditionSql()),
+				addExtraSpaceIfExist(extraOption),
+			)).Exec()
+		}
+	}
+}
+
+func addExtraSpaceIfExist(str string) string {
+	if str != "" {
+		return " " + str
+	}
+	return ""
 }
