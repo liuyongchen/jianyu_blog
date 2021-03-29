@@ -3,6 +3,7 @@ package service
 import (
 	"blog-service/internal/model"
 	"blog-service/pkg/app"
+	"blog-service/pkg/errcode"
 )
 
 type CountTagRequest struct {
@@ -41,6 +42,15 @@ func (svc *Service) GetTagList(param *TagListRequest, pager *app.Pager) ([]*mode
 }
 
 func (svc *Service) CreateTag(param *CreateTagRequest) error {
+	all, err := svc.dao.GetTagAll(param.Name, param.State)
+	if err != nil {
+		return err
+	}
+	for _, val := range all {
+		if val.Name == param.Name {
+			return errcode.ErrorCreateTagFail.WithDetails("Add tag name repeat.")
+		}
+	}
 	return svc.dao.CreateTag(param.Name, param.State, param.CreatedBy)
 }
 

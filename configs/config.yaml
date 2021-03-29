@@ -9,6 +9,8 @@ App:
   LogSavePath: storage/logs
   LogFileName: app
   LogFileExt: .log
+  ContextTimeout: 0
+  ContextTimeoutType: ms
   UploadSavePath: storage/uploads
   UploadServerUrl: http://127.0.0.1:8000/static
   UploadImageMaxSize: 5 # MB
@@ -27,3 +29,16 @@ DataBase:
   ParseTime: True
   MaxIdleConns: 10
   MaxOpenConns: 30
+JWT:
+  Secret: eddycjy
+  Issuer: blog-service
+  Expire: 7200
+Email:
+  Host: smtp.126.com
+  Prot: 445
+  UserName: feichefly@126.com
+  Passeord: VXMCARTWSOXKACCX
+  From: feichefly@126.com
+  IsSSL: true
+  To:
+    - 414527086@qq.com

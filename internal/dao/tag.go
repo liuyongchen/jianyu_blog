@@ -16,6 +16,11 @@ func (d *Dao) GetTagList(name string, state uint8, page, pageSize int) ([]*model
 	return tag.List(d.engine, pageOffset, pageSize)
 }
 
+func (d *Dao) GetTagAll(name string, state uint8) ([]*model.Tag, error) {
+	tags := model.Tag{Name: name, State: state}
+	return tags.ListAll(d.engine)
+}
+
 func (d *Dao) CreateTag(name string, state uint8, createdBy string) error {
 	tag := model.Tag{Name: name, State: state, Model: &model.Model{CreateBy: createdBy}}
 	return tag.Create(d.engine)

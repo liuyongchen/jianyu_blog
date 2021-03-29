@@ -1,5 +1,7 @@
 package model
 
+import "github.com/jinzhu/gorm"
+
 //CREATE TABLE `blog_auth` (
 //	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 // `app_key` varchar(20) DEFAULT '' COMMENT 'Key',
@@ -19,3 +21,41 @@ package model
 //	`modified_by`, `deleted_on`, `is_del`)
 //	VALUES (1, 'eddycjy', 'go-programming-tour-book', 0, 'eddycjy', 0,
 // '', 0, 0)
+
+// 1、Header
+// alg: 签名算法(HMAC、SHA256、RSA)
+// typ: 令牌类型(JWT)
+// 2、Payload
+// aud(audience):受众，即接受JWT的一方
+// exp(ExpiresAt):所签发的JWT过期时间，过期时间必须大于签发时间
+// jti(JWTId):JWT的唯一标识
+// iat(IssuedAt):签发时间
+// iss(Issuer):JWT的签发者
+// nbf(NotBefore):JWT的生效时间，如果未到这个时间，则不可用
+// sub(Subject):主题
+// 3、Signature
+// HMACSHA256(
+// base64UrlEncode(header) + "." +
+// base64UrlEncode(payload),
+// secret)
+//
+
+type Auth struct {
+	*Model
+	AppKey    string `json:"app_key"`
+	AppSecret string `json:"app_secret"`
+}
+
+func (a Auth) TableName() string {
+	return "blog_auth"
+}
+
+func (a Auth) Get(db *gorm.DB) (Auth, error) {
+	var auth Auth
+	db = db.Where("app_key = ? AND app_secret = ? AND is_del = ?", a.AppKey, a.AppSecret, 0)
+	err := db.First(&auth).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return auth, err
+	}
+	return auth, nil
+}
